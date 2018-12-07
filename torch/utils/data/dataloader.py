@@ -241,6 +241,8 @@ def pin_memory_batch(batch):
         return batch
     elif isinstance(batch, container_abcs.Mapping):
         return {k: pin_memory_batch(sample) for k, sample in batch.items()}
+    elif isinstance(batch, tuple):
+        return batch.__class__(*[pin_memory_batch(sample) for sample in batch])
     elif isinstance(batch, container_abcs.Sequence):
         return [pin_memory_batch(sample) for sample in batch]
     else:
